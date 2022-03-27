@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require('cors');
 const chat = require('./app/chat');
 const users = require('./app/users');
+const config = require('./config');
 const app = express();
 
 require('express-ws')(app);

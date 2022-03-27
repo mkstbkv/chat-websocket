@@ -8,7 +8,8 @@ router.post('/', async (req, res, next) => {
   try {
     const user = new User({
       email: req.body.email,
-      password: req.body.password
+      password: req.body.password,
+      displayName: req.body.displayName
     });
 
     user.generateToken();
