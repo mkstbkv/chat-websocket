@@ -29,6 +29,7 @@ export class LayoutComponent {
     this.user = store.select(state => state.users.user);
   }
 
+
   logout() {
     this.store.dispatch(logoutUserRequest());
   }

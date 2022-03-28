@@ -4,7 +4,8 @@
   fxLayoutAlign="space-between center"
 >
   <div>
-    <a routerLink="/">Chat</a>
+    <a routerLink="/">Home</a>&nbsp; |
+    <a routerLink="/chat">Chat</a>
   </div>
   <nav *appUserType="'user' else anonMenu">
     <button mat-icon-button [matMenuTriggerFor]="menu">

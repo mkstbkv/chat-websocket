@@ -25,6 +25,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MainPageComponent } from './pages/main-page/main-page.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     ChatsComponent,
     RegisterComponent,
     LoginComponent,
-    UserTypeDirective
+    UserTypeDirective,
+    MainPageComponent
   ],
   imports: [
     BrowserModule,
@@ -45,8 +47,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     AppStoreModule,
     LayoutModule,
     AppRoutingModule,
-    BrowserAnimationsModule,
-    LayoutModule,
     MatSnackBarModule,
     MatToolbarModule,
     MatButtonModule,

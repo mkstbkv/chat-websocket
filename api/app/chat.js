@@ -1,6 +1,9 @@
 const { nanoid } = require('nanoid');
-const activeConnections = {};
+const User = require('../models/User');
+const Messages = require("../models/Message");
+const Message = require("../models/Message");
 
+const activeConnections = {};
 
 module.exports = (ws, req) => {
     const id = nanoid();
@@ -12,23 +15,57 @@ module.exports = (ws, req) => {
         delete activeConnections[id];
     });
 
-    let username = 'Anonymous';
-
-    ws.on('message', (msg) => {
+    let user = null;
+    let users = [];
+    ws.on('message', async (msg) => {
         const decodedMessage = JSON.parse(msg);
         switch (decodedMessage.type) {
-            case 'SET_USERNAME':
-                username = decodedMessage.username;
-                break;
+            case 'LOGIN':
+                user = await User.findOne({token: decodedMessage.token});
+                users.push(user);
+                const messages = await Messages.find().populate('user', 'displayName').limit(30);
+                Object.keys(activeConnections).forEach(connId => {
+                    const conn = activeConnections[connId];
 
-            case 'SEND_MESSAGE':
+                    conn.send(JSON.stringify({
+                        type: 'PREV_MESSAGES',
+                        messages: {
+                            messages: messages,
+                            users: users
+                        }
+                    }));
+                });
+
+                break;
+            case 'USER_LOGOUT':
+                user = await User.findOne({token: decodedMessage.token});
+                users.splice(users.indexOf(user), 1);
                 Object.keys(activeConnections).forEach(connId => {
                     const conn = activeConnections[connId];
                     conn.send(JSON.stringify({
+                        type: 'LOGOUT',
+                        messages: {
+                            users
+                        }
+                    }));
+                });
+                user = null;
+
+                break;
+            case 'SEND_MESSAGE':
+                if (user === null) break;
+
+                await Message.create({
+                    user: decodedMessage.user,
+                    text: decodedMessage.text
+                });
+                const mes = await Messages.find().populate('user', 'displayName').limit(30);
+                Object.keys(activeConnections).forEach( connId => {
+                    const conn = activeConnections[connId];
+                    conn.send(JSON.stringify({
                         type: 'NEW_MESSAGE',
-                        message: {
-                            username,
-                            text: decodedMessage.text
+                        messages: {
+                            messages: mes
                         }
                     }));
                 });

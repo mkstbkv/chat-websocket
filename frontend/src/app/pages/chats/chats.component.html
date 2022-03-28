@@ -1,1 +1,35 @@
-<p>chats works!</p>
+<div fxLayout="row">
+  <div style="width: 300px">
+    <h2>Online users</h2>
+    <mat-list>
+      <mat-list-item *ngFor="let user of users" > {{ user?.displayName }} </mat-list-item>
+    </mat-list>
+  </div>
+
+  <div>
+    <h2>Chat room</h2>
+    <div>
+      <div *ngFor="let mes of messages">
+        <strong>{{ mes.user.displayName }}: </strong><span>{{ mes.text }}</span>
+      </div>
+    </div>
+    <form
+      #f="ngForm"
+      fxLayout="row"
+      (ngSubmit)="sendMessage()"
+    >
+      <input
+        type="text" name="text"
+         required matInput ngModel #email="ngModel"
+      /> &nbsp;
+      <button
+        type="submit"
+        mat-raised-button
+        color="primary"
+        [disabled]="f.invalid"
+      >
+        SEND
+      </button>
+    </form>
+  </div>
+</div>

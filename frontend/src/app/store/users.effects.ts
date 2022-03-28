@@ -30,7 +30,7 @@ export class UsersEffects {
       map(user => registerUserSuccess({user})),
       tap(() => {
         this.helpers.openSnackbar('Register successful');
-        void this.router.navigate(['/']);
+        void this.router.navigate(['/chat']);
       }),
       this.helpers.catchServerError(registerUserFailure)
     ))
@@ -42,7 +42,7 @@ export class UsersEffects {
       map(user => loginUserSuccess({user})),
       tap(() => {
         this.helpers.openSnackbar('Login successful');
-        void this.router.navigate(['/']);
+        void this.router.navigate(['/chat']);
       }),
       this.helpers.catchServerError(loginUserFailure)
     ))
