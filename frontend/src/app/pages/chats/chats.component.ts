@@ -56,7 +56,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
 
     this.ws.onmessage = event => {
       const decodedMessage: ServerMessage = JSON.parse(event.data);
-      console.log(decodedMessage)
+      this.users.push(decodedMessage.messages.user)
 
       if (decodedMessage.type === 'NEW_MESSAGE') {
         this.messages = decodedMessage.messages.messages;
